@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 
 //open json db
 const db = fs.readFileSync('db.json');
-var recipeDB = JSON.parse(db);
+var recipe_db = JSON.parse(db);
 
 app.get('/recipe/:name/', (req, res) => {
     var name = req.params.name.replace(/_/g," ");
@@ -25,7 +25,7 @@ app.get('/recipe/:name/', (req, res) => {
         "msg": "recipe not found"
     };
     for(var i=0; i < recipeDB.length; i++){
-        if(recipeDB[i].name === name){
+        if(recipe_db[i].name === name){
             reply = {
                 status: 200,
                 msg: "all okey",
@@ -39,14 +39,14 @@ app.get('/recipe/:name/', (req, res) => {
 })
 
 app.get('/recipe', (req, res) => {
-    res.send(recipeDB);
+    res.send(recipe_db);
 })
 
 app.post('/add_recipe',(req, res) =>{
     
-    recipeDB.push(req.body)
-    var data = JSON.stringify(recipeDB)
-    fs.writeFile('db.json', data, ()=>{console.log("all set")})
+    recipe_db.push(req.body)
+    var data = JSON.stringify(recipe_db)
+    fs.writeFile('db.json', data, ()=>{console.log("recipe added")})
 
     res.send("Thankyu")
 })
