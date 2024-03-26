@@ -46,12 +46,28 @@ app.get('/recipe/:name/', (req, res) => {
             status: 200,
             msg: "all okey",
             recipe: recipe[0]
-        }    
-
+        }
     }
-        
     res.send(reply);
     
+})
+
+app.get('/recipe/:author/', (req, res) => {
+    var author = req.params.author.replace(/_/g," ");
+
+    var reply ={
+        status: 404,
+        "msg": "recipe not found"
+    };
+    recipe = searchRecipes(author, 'author')
+    if (recipe.length !== 0){
+        reply = {
+            status: 200,
+            msg: "all okey",
+            recipe: recipe[0]
+        }    
+    }
+    res.send(reply);
 })
 
 app.get('/recipe', (req, res) => {
