@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 const db = fs.readFileSync('db.json');
 var recipeDB = JSON.parse(db);
 
-app.get('/search/:name/', (req, res) => {
+app.get('/recipe/:name/', (req, res) => {
     var name = req.params.name.replace(/_/g," ");
 
     var reply ={
@@ -42,7 +42,7 @@ app.get('/recipe', (req, res) => {
     res.send(recipeDB);
 })
 
-app.post('/addRecipe',(req, res) =>{
+app.post('/add_recipe',(req, res) =>{
     
     recipeDB.push(req.body)
     var data = JSON.stringify(recipeDB)
