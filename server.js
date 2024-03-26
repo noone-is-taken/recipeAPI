@@ -17,6 +17,22 @@ app.use(bodyParser.json());
 const db = fs.readFileSync('db.json');
 var recipe_db = JSON.parse(db);
 
+//search function
+function searchRecipes(value, field) {
+    if (!data || !data.recipes) {
+      console.error('Data or recipes array not found');
+      return [];
+    }
+    
+    if (field === 'name'){
+      return  data.recipes.filter(recipe => recipe.name.toLowerCase().includes(query.toLowerCase()));
+    }else if(field === 'author'){
+      return  data.recipes.filter(recipe => recipe.author.toLowerCase().includes(query.toLowerCase()));
+    }
+    return [];
+  }
+
+
 app.get('/recipe/:name/', (req, res) => {
     var name = req.params.name.replace(/_/g," ");
 
@@ -24,16 +40,16 @@ app.get('/recipe/:name/', (req, res) => {
         status: 404,
         "msg": "recipe not found"
     };
-    for(var i=0; i < recipeDB.length; i++){
-        if(recipe_db[i].name === name){
-            reply = {
-                status: 200,
-                msg: "all okey",
-                recipe: recipeDB[i]
-            }
-        }
-    }
+    recipe = searchRecipes(name, 'name')
+    if (recipe.length !== 0){
+        reply = {
+            status: 200,
+            msg: "all okey",
+            recipe: recipe[0]
+        }    
 
+    }
+        
     res.send(reply);
     
 })
